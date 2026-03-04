@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Free Soft Photobooth 🎀</title>
+<style>
+body{
+  text-align:center;
+  font-family:Poppins;
+  background:linear-gradient(135deg,#ffd6f6,#d6f0ff);
+}
+video,canvas{
+  width:300px;
+  border-radius:20px;
+  border:5px solid white;
+  margin-top:10px;
+}
+button{
+  margin:5px;
+  padding:8px 15px;
+  border-radius:20px;
+  border:none;
+  background:white;
+  cursor:pointer;
+}
+</style>
+</head>
+<body>
+
+<h2>🆓 Free Y2K Photobooth 🎀</h2>
+
+<video id="video" autoplay></video>
+<canvas id="canvas"></canvas>
+<br>
+
+<button onclick="capture()">📸 Capture</button>
+<button onclick="download()">💾 Download</button>
+<button onclick="stripMode()">🎞️ 2 Photo Strip</button>
+
+<br>
+
+<button onclick="setFilter('none')">Normal</button>
+<button onclick="setFilter('grayscale(100%)')">Vintage</button>
+<button onclick="setFilter('brightness(120%)')">Soft Glow</button>
+
+<script>
+const video=document.getElementById("video");
+const canvas=document.getElementById("canvas");
+const ctx=canvas.getContext("2d");
+canvas.width=300;
+canvas.height=350;
+
+navigator.mediaDevices.getUserMedia({video:true})
+.then(stream=>video.srcObject=stream);
+
+function setFilter(f){
+ video.style.filter=f;
+}
+
+function capture(){
+ ctx.filter=video.style.filter;
+ ctx.drawImage(video,0,0,canvas.width,canvas.height);
+}
+
+function download(){
+ const link=document.createElement("a");
+ link.download="free-photobooth.png";
+ link.href=canvas.toDataURL();
+ link.click();
+}
+
+function stripMode(){
+ ctx.drawImage(video,0,0,300,170);
+ ctx.drawImage(video,0,180,300,170);
+}
+</script>
+
+</body>
+</html>
